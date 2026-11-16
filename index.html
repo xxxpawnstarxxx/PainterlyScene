@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unlocked, at Dusk</title>
+  <meta name="description" content="A living hand-drawn pastel landscape, drawn mark by mark with simulated dry media and animated on twos.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/gallery.css">
+</head>
+<body>
+  <main class="gallery">
+    <div id="stage" class="stage">
+      <div class="frame">
+        <div class="mat">
+          <canvas id="sheet" width="1920" height="1080" aria-label="An animated pastel landscape: a sun inside a stone ring at dusk, floating islands, a golden river winding home, and a fern-lined hollow of glowing seed pods."></canvas>
+        </div>
+      </div>
+      <div id="loupe" class="loupe" aria-hidden="true"><canvas></canvas></div>
+    </div>
+
+    <section class="placard">
+      <div class="label">
+        <h1>Unlocked, at Dusk</h1>
+        <p class="medium">Ember chalk, lantern wax, dusk conté and willow ash, worked with tortillon on twilight-toned cold-press. Animated on twos.</p>
+        <p class="seed" id="seed"></p>
+      </div>
+      <div class="progress" aria-live="polite">
+        <p class="status"><span id="status">Preparing the studio…</span> <span id="status-tool" class="status-tool"></span></p>
+        <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      </div>
+      <nav class="controls" aria-label="Gallery controls">
+        <button id="btn-hurry" class="hurry" title="Hurry the artist (F)">Hurry</button>
+        <button id="btn-play" title="Pause / play (Space)" aria-pressed="false">Pause</button>
+        <button id="btn-loupe" title="Magnifying loupe (L)" aria-pressed="false">Loupe</button>
+        <button id="btn-notes" title="Curator's notes (N)" aria-expanded="false">Notes</button>
+        <button id="btn-export" title="Export this frame as PNG (S)">Export PNG</button>
+      </nav>
+    </section>
+  </main>
+
+  <aside id="notes" class="notes" aria-label="Curator's notes">
+    <button id="notes-close" class="notes-close" aria-label="Close notes">×</button>
+    <p class="eyebrow">Curator’s notes</p>
+    <h2>On a world that opened all at once</h2>
+    <p>
+      There is no one in this picture, and nothing you could hold. It is drawn from two feelings.
+      The first is the afternoon a life changes on a single audacious idea — the strange, floating
+      invincibility of it, the loud joy that follows, and the long, golden drive home through a warm
+      night when every road seems to have been unlocked just for you. The second is older: a birthday,
+      a vast new world discovered for the first time, hours vanishing in its glow, wrapped in warmth,
+      and the messy, impatient ache to dive back in.
+    </p>
+    <p>
+      So the sun sits inside a colossal stone ring, a gate standing open. Islands hang in the air because
+      they have simply declined to fall. A river of molten gold winds all the way home into the light,
+      carrying streaks of momentum. Above the valley, chalk bursts of celebration flower and crumble.
+      And in the hollow under the great fern — whose fiddlehead is still curled like a secret — a nest
+      of warm seed pods trembles, hops and bursts, unable to wait one more second.
+    </p>
+    <p>
+      Every mark on the sheet was made by a simulated hand: a wrist that arcs, a tremor, a pressure that
+      rises and lifts. Pigment is pressed through a physical model of the paper’s tooth, loads it as
+      layers build, crumbles, skips and is dragged by the stump. Living elements are redrawn by that hand
+      twelve times a second, and the contours boil between three separately searched drawings — the way
+      a hand-drawn film breathes.
+    </p>
+    <h2 class="tools-title">The five invented tools</h2>
+    <div id="tool-cards" class="tool-cards"></div>
+    <h2 class="tools-title">In the gallery</h2>
+    <ul class="keys">
+      <li><kbd>Space</kbd> pause / play</li>
+      <li><kbd>L</kbd> loupe — inspect the tooth and the grain</li>
+      <li><kbd>N</kbd> these notes</li>
+      <li><kbd>S</kbd> export the current frame as PNG</li>
+      <li><kbd>F</kbd> hurry the artist while drawing</li>
+      <li>Add <code>?seed=2024</code> to the address for a different sheet</li>
+    </ul>
+  </aside>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

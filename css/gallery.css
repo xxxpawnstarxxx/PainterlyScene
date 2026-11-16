@@ -1,0 +1,263 @@
+/* gallery.css — a dark museum room, a single lit work, a wall label. */
+
+:root {
+  --wall: #0d0b13;
+  --wall-lit: #1b1624;
+  --ink: #e9e1d4;
+  --ink-dim: #a99fb3;
+  --ink-faint: #6d6479;
+  --accent: #f4b05a;
+  --accent-cool: #6fe6f2;
+  --frame: #0a080c;
+  --mat: #17131c;
+  --serif: 'Cormorant Garamond', 'Iowan Old Style', Georgia, serif;
+  --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; height: 100%; }
+
+body {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 38%, var(--wall-lit) 0%, var(--wall) 70%),
+    var(--wall);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.55;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.gallery {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 3vh, 40px) 16px clamp(16px, 3vh, 32px);
+  gap: clamp(14px, 2.4vh, 28px);
+}
+
+/* ------------------------------------------------------------- the work */
+.stage {
+  position: relative;
+  width: min(100%, calc((100vh - 230px) * 16 / 9));
+  min-width: min(100%, 320px);
+}
+
+.frame {
+  padding: clamp(6px, 0.9vw, 14px);
+  background: linear-gradient(145deg, #1a161e, var(--frame) 40%, #050406);
+  box-shadow:
+    0 0 0 1px #000,
+    0 2px 0 1px rgba(255, 255, 255, 0.03) inset,
+    0 40px 90px -20px rgba(0, 0, 0, 0.85),
+    0 0 140px -40px rgba(244, 176, 90, 0.14);
+  border-radius: 2px;
+}
+
+.mat {
+  padding: clamp(10px, 2.2vw, 36px);
+  background: var(--mat);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.025), inset 0 6px 18px rgba(0, 0, 0, 0.55);
+}
+
+#sheet {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: #1e183a;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6), 0 3px 10px rgba(0, 0, 0, 0.6);
+  image-rendering: auto;
+}
+
+body.loupe-on #sheet { cursor: none; }
+
+/* ------------------------------------------------------------- loupe */
+.loupe {
+  position: fixed;
+  left: 0; top: 0;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  box-shadow:
+    0 0 0 2px rgba(10, 8, 12, 0.9),
+    0 0 0 5px rgba(196, 170, 120, 0.55),
+    0 0 0 7px rgba(10, 8, 12, 0.9),
+    0 24px 60px rgba(0, 0, 0, 0.7);
+  z-index: 20;
+}
+.loupe.visible { opacity: 1; }
+.loupe canvas { width: 100%; height: 100%; display: block; }
+.loupe::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.16), transparent 38%),
+              radial-gradient(circle at 50% 50%, transparent 62%, rgba(0, 0, 0, 0.35) 100%);
+}
+
+/* ------------------------------------------------------------- placard */
+.placard {
+  width: min(100%, calc((100vh - 230px) * 16 / 9));
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 18px 32px;
+}
+
+.label h1 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-style: italic;
+  font-size: clamp(22px, 2.3vw, 32px);
+  letter-spacing: 0.01em;
+  margin: 0 0 2px;
+  color: var(--ink);
+}
+.label .medium {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(14px, 1.1vw, 16px);
+  color: var(--ink-dim);
+  max-width: 52ch;
+}
+.label .seed {
+  margin: 6px 0 0;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.progress { min-width: 0; transition: opacity 1.2s ease; }
+.status {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: var(--ink-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.status-tool {
+  color: var(--accent);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  margin-left: 6px;
+}
+.progress-track {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+  transition: opacity 1.2s ease;
+}
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #9b2b72, var(--accent), var(--accent-cool));
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+body.living .progress-track { opacity: 0; }
+body.living .status { color: var(--ink-faint); font-style: italic; font-family: var(--serif); font-size: 14px; }
+
+.controls { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.controls button {
+  appearance: none;
+  background: transparent;
+  color: var(--ink-dim);
+  border: 1px solid rgba(233, 225, 212, 0.14);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font: 500 12px/1 var(--sans);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.controls button:hover { color: var(--ink); border-color: rgba(233, 225, 212, 0.35); }
+.controls button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.controls button.on, .controls button[aria-pressed="true"] { color: #1a1206; background: var(--accent); border-color: var(--accent); }
+.controls button:disabled { opacity: 0.35; cursor: default; }
+#btn-play { display: none; }
+body.living #btn-play { display: inline-block; }
+body.living .hurry { display: none; }
+
+/* ------------------------------------------------------------- notes */
+.notes {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: min(460px, 100vw);
+  padding: 44px 34px 48px;
+  background: rgba(14, 11, 19, 0.96);
+  backdrop-filter: blur(10px);
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: -30px 0 80px rgba(0, 0, 0, 0.6);
+  overflow-y: auto;
+  transform: translateX(102%);
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+  z-index: 30;
+}
+.notes.open { transform: translateX(0); }
+.notes-close {
+  position: absolute; top: 14px; right: 16px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent; color: var(--ink-dim);
+  font-size: 20px; line-height: 1; cursor: pointer;
+}
+.notes-close:hover { color: var(--ink); }
+.eyebrow { margin: 0 0 6px; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+.notes h2 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-style: italic;
+  font-size: 26px;
+  line-height: 1.15;
+  margin: 0 0 16px;
+}
+.notes p { color: var(--ink-dim); margin: 0 0 14px; font-family: var(--serif); font-size: 16.5px; line-height: 1.55; }
+.notes .tools-title { font-size: 21px; margin-top: 30px; }
+
+.tool-cards { display: grid; gap: 12px; }
+.tool-card {
+  padding: 14px 16px 4px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.015);
+  transition: border-color 0.4s, background 0.4s;
+}
+.tool-card.active { border-color: rgba(244, 176, 90, 0.55); background: rgba(244, 176, 90, 0.06); }
+.tool-card header { display: flex; align-items: baseline; gap: 10px; }
+.tool-card h3 { margin: 0; font-family: var(--serif); font-weight: 500; font-size: 20px; color: var(--ink); }
+.tool-no { font-family: var(--serif); font-style: italic; color: var(--accent); min-width: 22px; }
+.tool-card .tool-medium { margin: 2px 0 8px; font-family: var(--sans); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); }
+.tool-card .tool-recipe { font-style: italic; color: var(--ink); opacity: 0.8; }
+.tool-card p { font-size: 15px; }
+
+.keys { list-style: none; padding: 0; margin: 0; color: var(--ink-dim); display: grid; gap: 8px; }
+.keys kbd, .keys code {
+  font: 500 11px/1 var(--sans);
+  padding: 4px 7px; margin-right: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 4px;
+  color: var(--ink);
+}
+
+@media (max-width: 860px) {
+  .placard { grid-template-columns: 1fr; align-items: start; }
+  .controls { justify-content: flex-start; }
+  .stage, .placard { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notes, .loupe, .progress-bar { transition: none; }
+}
