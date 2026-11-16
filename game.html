@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Drift Home</title>
+  <meta name="description" content="A small hand-drawn game inside the living pastel “Unlocked, at Dusk”: gather embers and drift home into the sun.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+  <canvas id="game" tabindex="0" aria-label="Drift Home — a hand-drawn game. Use the arrow keys and Enter, or the mouse." role="application"></canvas>
+
+  <div id="loading" class="loading" role="status">
+    <p class="loading-title">Drift Home</p>
+    <p id="loading-text" class="loading-text">Preparing the studio…</p>
+    <div class="loading-track"><div id="loading-bar" class="loading-bar"></div></div>
+    <p class="loading-note">The first visit is drawn by hand, stroke by stroke. After that the sheet is kept for you.</p>
+  </div>
+
+  <div id="live" class="sr-only" aria-live="polite"></div>
+  <script type="module" src="js/game/GameMain.js"></script>
+</body>
+</html>

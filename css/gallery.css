@@ -182,6 +182,19 @@ body.living .status { color: var(--ink-faint); font-style: italic; font-family: 
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
+.controls .play-link {
+  display: inline-block;
+  padding: 7px 16px;
+  border-radius: 999px;
+  font: 500 12px/1 var(--sans);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  color: #1a1206;
+  background: linear-gradient(90deg, var(--accent), #ffcf72);
+  border: 1px solid var(--accent);
+}
+.controls .play-link:hover { filter: brightness(1.08); }
+.controls .play-link:focus-visible { outline: 2px solid var(--accent-cool); outline-offset: 2px; }
 .controls button:hover { color: var(--ink); border-color: rgba(233, 225, 212, 0.35); }
 .controls button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .controls button.on, .controls button[aria-pressed="true"] { color: #1a1206; background: var(--accent); border-color: var(--accent); }

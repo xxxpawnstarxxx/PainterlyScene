@@ -41,6 +41,8 @@ export class LivingAnimation {
     this.boilIndex = 0;
     this.shaftIndex = 0;
     this.lod = 1;                       // level of detail, adapts to the machine
+    this.maxLod = 1;                    // user cap (game settings)
+    this.boilEnabled = true;
     this.lastCost = 0;
 
     const r = this.rng;
@@ -118,8 +120,8 @@ export class LivingAnimation {
     this.time += DRAWING_DT;
     this.drawings++;
     // three-drawing boil: never the same drawing twice in a row
-    this.boilIndex = (this.boilIndex + 1 + (r.chance(0.5) ? 1 : 0)) % 3;
-    if (this.drawings % 2 === 0) this.shaftIndex = (this.shaftIndex + 1 + (r.chance(0.5) ? 1 : 0)) % 3;
+    if (this.boilEnabled) this.boilIndex = (this.boilIndex + 1 + (r.chance(0.5) ? 1 : 0)) % 3;
+    if (this.boilEnabled && this.drawings % 2 === 0) this.shaftIndex = (this.shaftIndex + 1 + (r.chance(0.5) ? 1 : 0)) % 3;
 
     this._simulate(DRAWING_DT);
 
@@ -144,7 +146,8 @@ export class LivingAnimation {
     // adapt detail so the 12fps cadence holds on slower machines
     this.lastCost = performance.now() - t0;
     if (this.lastCost > 55 && this.lod > 0.35) this.lod -= 0.08;
-    else if (this.lastCost < 28 && this.lod < 1) this.lod += 0.04;
+    else if (this.lastCost < 28 && this.lod < this.maxLod) this.lod += 0.04;
+    if (this.lod > this.maxLod) this.lod = this.maxLod;
   }
 
   _wind(x, y, t) {

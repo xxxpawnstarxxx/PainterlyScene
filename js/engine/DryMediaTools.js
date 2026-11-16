@@ -24,7 +24,7 @@
  *   Tortillon       rolled-paper blending stump
  */
 import { RNG, Perlin, valueField, clamp, smoothstep, makeCanvas } from './Noise.js';
-import { mix2, P } from './Palette90sOVA.js';
+import { mix2, P, css } from './Palette90sOVA.js';
 
 /* ====================================================================
  *  The Hand — turns a few control points into a living, trembling path
@@ -246,6 +246,26 @@ export class Studio {
     if (x - r < b.x0) b.x0 = x - r; if (y - r < b.y0) b.y0 = y - r;
     if (x + r > b.x1) b.x1 = x + r; if (y + r > b.y1) b.y1 = y + r;
     this.dabCount++;
+  }
+
+  /**
+   * Press a glyph of pigment straight into a pressure band — how a lettering
+   * artist presses a chalk stencil. The tooth mask still breaks it up on flush.
+   */
+  press(level, text, x, y, { font, color, alpha = 1, rot = 0, sx = 1, sy = 1, size = 40 }) {
+    const b = this.buckets[level], ctx = b.ctx;
+    const c = Math.cos(rot), s = Math.sin(rot);
+    ctx.setTransform(c * sx, s * sx, -s * sy, c * sy, x, y);
+    ctx.globalAlpha = alpha;
+    ctx.font = font;
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = css(color);
+    ctx.fillText(text, 0, 0);
+    const w = ctx.measureText(text).width * sx + size * 0.3;
+    if (x - size * 0.3 < b.x0) b.x0 = x - size * 0.3;
+    if (y - size * 1.2 < b.y0) b.y0 = y - size * 1.2;
+    if (x + w > b.x1) b.x1 = x + w;
+    if (y + size * 0.5 > b.y1) b.y1 = y + size * 0.5;
   }
 
   /** Press the buckets through the paper's tooth and onto the target sheet. */
@@ -521,7 +541,7 @@ export const Technique = {
         const vv = v + rng.gauss(0, spacing * 0.25);
         const sx = nx * vv + dx * u, sy = ny * vv + dy * u;
         // walk the stroke, keep the longest run that stays inside the region
-        const steps = Math.max(3, Math.ceil(len / 6));
+        const steps = Math.max(3, Math.ceil(len / (o.step ?? 6)));
         let start = -1, best = null;
         for (let k = 0; k <= steps; k++) {
           const px = sx + cdx * (len * k) / steps, py = sy + cdy * (len * k) / steps;
